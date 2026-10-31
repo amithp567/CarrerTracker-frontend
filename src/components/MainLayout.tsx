@@ -23,10 +23,10 @@ const MainLayout = () => {
                 <Outlet />
                 </main>
 
-                
+                <Footer />
             </div>
         </div>
-        <Footer />
+        
     </>
   );
 };

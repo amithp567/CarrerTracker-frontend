@@ -1,15 +1,12 @@
 import {
-  Building2,
-  TrendingUp,
-  ArrowDown,
-  Minus,
   CheckCircle2,
   XCircle,
-  BriefcaseBusiness,
-  ArrowUpRight,
-  Activity,
-  Target,
+  ArrowUpRight
 } from "lucide-react";
+import { BsBuildingsFill, BsGraphUpArrow, BsGraphDownArrow } from "react-icons/bs";
+import { MdOutlineHorizontalRule } from "react-icons/md";
+import { PiStackPlusFill, PiEnvelopeSimpleOpenDuotone } from "react-icons/pi";
+import { CgCloseR } from "react-icons/cg";
 
 import { useNavigate } from "react-router-dom";
 
@@ -17,7 +14,7 @@ interface DashboardCard {
   title: string;
   count: number;
   description: string;
-  icon: React.ElementType;
+  icon: React.ReactNode;
   color: string;
   bgColor: string;
   path: string;
@@ -28,7 +25,7 @@ const dashboardData: DashboardCard[] = [
     title: "Total Companies",
     count: 48,
     description: "Companies tracked",
-    icon: Building2,
+    icon: <BsBuildingsFill size={21}/>,
     color: "text-blue-600",
     bgColor: "bg-blue-50",
     path: "/companies",
@@ -37,7 +34,7 @@ const dashboardData: DashboardCard[] = [
     title: "High Priority",
     count: 12,
     description: "Top opportunities",
-    icon: TrendingUp,
+    icon: <BsGraphUpArrow  size={21}/>,
     color: "text-red-600",
     bgColor: "bg-red-50",
     path: "/companies?priority=HIGH",
@@ -46,7 +43,7 @@ const dashboardData: DashboardCard[] = [
     title: "Medium Priority",
     count: 20,
     description: "Potential opportunities",
-    icon: Minus,
+    icon: <MdOutlineHorizontalRule size={21}/>,
     color: "text-yellow-600",
     bgColor: "bg-yellow-50",
     path: "/companies?priority=MEDIUM",
@@ -55,7 +52,7 @@ const dashboardData: DashboardCard[] = [
     title: "Low Priority",
     count: 16,
     description: "Other opportunities",
-    icon: ArrowDown,
+    icon: <BsGraphDownArrow size={21} />,
     color: "text-green-600",
     bgColor: "bg-green-50",
     path: "/companies?priority=LOW",
@@ -64,7 +61,7 @@ const dashboardData: DashboardCard[] = [
     title: "Applications Open",
     count: 18,
     description: "Currently accepting",
-    icon: CheckCircle2,
+    icon: <PiEnvelopeSimpleOpenDuotone  size={21}/>,
     color: "text-emerald-600",
     bgColor: "bg-emerald-50",
     path: "/companies?status=OPEN",
@@ -73,7 +70,7 @@ const dashboardData: DashboardCard[] = [
     title: "Applications Closed",
     count: 10,
     description: "No longer accepting",
-    icon: XCircle,
+    icon: <CgCloseR size={21}/>,
     color: "text-gray-600",
     bgColor: "bg-gray-100",
     path: "/companies?status=CLOSED",
@@ -82,7 +79,7 @@ const dashboardData: DashboardCard[] = [
     title: "Total Applications",
     count: 28,
     description: "Applications tracked",
-    icon: BriefcaseBusiness,
+    icon: <PiStackPlusFill size={21}/>,
     color: "text-purple-600",
     bgColor: "bg-purple-50",
     path: "/applications",
@@ -96,9 +93,9 @@ const Home = () => {
   const totalCompanies = 48;
 
   const priorityData = [
-    { name: "High Priority", count: 12, color: "bg-red-500" },
-    { name: "Medium Priority", count: 20, color: "bg-yellow-500" },
-    { name: "Low Priority", count: 16, color: "bg-green-500" },
+    { name: "High Priority", count: 12, color: "bg-red-700" },
+    { name: "Medium Priority", count: 20, color: "bg-yellow-600" },
+    { name: "Low Priority", count: 16, color: "bg-green-600" },
   ];
 
   return (
@@ -117,7 +114,7 @@ const Home = () => {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {dashboardData.map((item) => {
-          const Icon = item.icon;
+          // const Icon = item.icon;
 
           return (
             <div
@@ -141,10 +138,10 @@ const Home = () => {
                 </div>
 
                 <div 
-                  className={`rounded-xl p-3 ${item.bgColor} 
+                  className={`rounded-xl p-3 ${item.bgColor} ${item.color}  
                   transition duration-300 group-hover:scale-110`}
                 >
-                  <Icon className={`h-6 w-6 ${item.color}`} />
+                  {item.icon}
                 </div>
               </div>
 
@@ -173,7 +170,6 @@ const Home = () => {
                 Companies based on priority
               </p>
             </div>
-            <Target className="text-blue-600" size={22} />
           </div>
 
           <div className="mb-6 flex items-center gap-3">
@@ -220,7 +216,6 @@ const Home = () => {
                 Your current application status
               </p>
             </div>
-            <Activity className="text-purple-600" size={22} />
           </div>
 
           <div className="mb-6">
@@ -243,7 +238,7 @@ const Home = () => {
               </p>
             </div>
 
-            <div className="rounded-lg bg-gray-100 p-4">
+            <div className="rounded-lg bg-red-100 p-4">
               <XCircle className="mb-3 text-gray-600" size={23} />
               <h3 className="text-2xl font-bold text-gray-800">
                 10

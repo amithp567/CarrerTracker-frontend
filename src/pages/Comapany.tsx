@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { CompanyListAPI } from "../api/company";
 import { GrNext, GrPrevious } from "react-icons/gr";
+import AddCompany from "../components/AddCompany";
+import DetailCompany from "../components/DetailCompany";
+
 
 type CompanyTag = {
   id: string;
@@ -24,6 +27,8 @@ const Company = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [isAddCompany, setIsAddCompany] = useState(false);
+  const [selectedComapanyId, setSelectedComapanyId] = useState<number | string | null>(null);
 
   const fetchCompanies = async (pageNumber = 1) => {
     try {
@@ -49,6 +54,23 @@ const Company = () => {
     fetchCompanies(page);
   }, [page]);
 
+  if(isAddCompany) return <AddCompany 
+    onClose={()=>setIsAddCompany(false)} 
+    onSuccess={async () => {
+        await fetchCompanies();
+        setIsAddCompany(false);
+    }}
+  />
+
+  if (selectedComapanyId) return <DetailCompany
+    companyId = {selectedComapanyId}
+    onClose={async()=>{
+      await fetchCompanies();
+      setSelectedComapanyId(null);
+    }}
+  
+  />
+
   return (
     <div className="p-6">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
@@ -61,7 +83,10 @@ const Company = () => {
           </p>
         </div>
 
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg">
+        <button 
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+          onClick={()=>setIsAddCompany(true)}
+        >
           + Add Company
         </button>
       </div>
@@ -95,7 +120,8 @@ const Company = () => {
               companies.map((company) => (
                 <tr
                   key={company.id}
-                  className="transition-colors hover:bg-gray-50"
+                  className="transition-colors hover:bg-gray-50 cursor-pointer"
+                  onClick={()=>setSelectedComapanyId(company.id)}
                 >
                   <td className="px-5 py-4">
                     <p className="font-medium text-sm text-gray-800 capitalize">
@@ -110,16 +136,15 @@ const Company = () => {
                   <td className="px-5 py-4">
                     <span className={`inline-flex items-center rounded-md px-2.5 py-1 text-xs ${
                       company.priority === "HIGH"
-                        ? "bg-red-50 text-red-700"
+                        ? "bg-red-50 text-red-900"
                         : company.priority === "MED"
-                        ? "bg-yellow-50 text-yellow-700"
-                        : "bg-green-50 text-green-600"
+                        ? "bg-orange-50 text-orange-900"
+                        : "bg-green-50 text-green-900"
                     }`}>
                       {company.priority}
                     </span>
                   </td>
 
-                  {/* Tags */}
                   <td className="px-5 py-4">
                     <div className="flex flex-wrap gap-1.5">
                       {company.tags && company.tags.length > 0 ? (
